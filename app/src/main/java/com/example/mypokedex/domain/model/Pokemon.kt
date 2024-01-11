@@ -1,4 +1,4 @@
-package com.example.mypokedex.model
+package com.example.mypokedex.domain.model
 
 data class Pokemon(
     var pokemonID: Int,

@@ -1,4 +1,4 @@
-package com.example.mypokedex.model
+package com.example.mypokedex.domain.model
 
 import com.example.mypokedex.ui.theme.ATKColor
 import com.example.mypokedex.ui.theme.DEFColor

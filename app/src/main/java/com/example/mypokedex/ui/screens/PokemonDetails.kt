@@ -1,4 +1,4 @@
-package com.example.mypokedex.view
+package com.example.mypokedex.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mypokedex.R
-import com.example.mypokedex.model.Pokemon
-import com.example.mypokedex.model.Types
+import com.example.mypokedex.domain.model.Pokemon
+import com.example.mypokedex.domain.model.Types
 import com.example.mypokedex.ui.theme.PokedexColor
 import java.util.Locale
 
 @Composable
-fun PokemonItem(pokemon: Pokemon, paddingValues: PaddingValues) {
+fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxHeight()

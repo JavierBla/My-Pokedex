@@ -1,10 +1,10 @@
 package com.example.mypokedex
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,21 +25,24 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
-import com.example.mypokedex.model.Pokemon
+import com.example.mypokedex.domain.model.Pokemon
 import com.example.mypokedex.ui.theme.MyPokedexTheme
 import com.example.mypokedex.ui.theme.PokedexColor
-import com.example.mypokedex.view.PokemonItem
-import com.example.mypokedex.viewModel.MyViewModel
+import com.example.mypokedex.ui.screens.PokemonList
+import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
+import com.example.mypokedex.ui.viewModel.PokemonListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyPokedexTheme {
-                //val viewModel: MyViewModel by viewModels()
-                MyScaffold(application)
+                val viewModel: PokemonDetailsViewModel by viewModels()
+                val listPokemon: PokemonListViewModel by viewModels()
+                MyScaffold(viewModel, listPokemon)
             }
         }
     }
@@ -48,9 +51,9 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun MyScaffold(application: Application) {
-    val myViewModel = MyViewModel(application)
-    val pokemon = myViewModel.pokemon.observeAsState().value
+private fun MyScaffold(viewModel: PokemonDetailsViewModel, listViewModel: PokemonListViewModel) {
+    val pokemon = viewModel.pokemon.observeAsState().value
+    val listPokemon = listViewModel.list.observeAsState().value
 
     Scaffold(
         modifier = Modifier
@@ -58,8 +61,9 @@ private fun MyScaffold(application: Application) {
         containerColor = MaterialTheme.colorScheme.background,
         topBar = { MyTopAppBar(pokemon) }
     ) {
+        PokemonList(it, listPokemon)
         if (pokemon != null) {
-            PokemonItem(pokemon, it)
+            //PokemonDetails(pokemon, it)
         } else {
             Column(
                 modifier = Modifier.padding(paddingValues = it),
