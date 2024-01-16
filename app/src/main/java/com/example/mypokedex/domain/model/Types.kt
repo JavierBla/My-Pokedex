@@ -20,7 +20,7 @@ import com.example.mypokedex.ui.theme.rock
 import com.example.mypokedex.ui.theme.steel
 import com.example.mypokedex.ui.theme.water
 
-enum class Types(val typeName: String, val color: Color) {
+enum class Types(var typeName: String, var color: Color) {
     FLYING(typeName = "flying", color = flying),
     FIRE(typeName = "fire", color = fire),
     BUG(typeName = "bug", color = bug),

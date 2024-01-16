@@ -27,7 +27,7 @@ class PokemonDetailsViewModel @Inject constructor(
     private fun loadPokemon() {
         viewModelScope.launch {
             val pokemonLoaded = withContext(Dispatchers.IO) {
-                pokemonRepository.obtainFromJson("reshiram")
+                pokemonRepository.obtainFromApi()
             }
             _pokemon.postValue(pokemonLoaded)
         }

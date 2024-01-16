@@ -73,6 +73,6 @@ class PokemonDeserialized: JsonDeserializer<Pokemon> {
 
         stats.add(Stat("EXP",json.get("base_experience").asInt, EXPColor))
 
-        return Pokemon(id,name,pokemonTypes,weight,height,stats,image)
+        return Pokemon(id,name,/*pokemonTypes*/weight,height,stats,image)
     }
 }

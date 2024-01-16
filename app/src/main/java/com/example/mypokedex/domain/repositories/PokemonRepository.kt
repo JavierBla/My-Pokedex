@@ -7,6 +7,9 @@ import com.example.mypokedex.domain.model.PokemonDeserialized
 import com.example.mypokedex.domain.model.PokemonListDeserializated
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 class PokemonRepository @Inject constructor(application: Application): IObtainPokemon {
@@ -35,7 +38,18 @@ class PokemonRepository @Inject constructor(application: Application): IObtainPo
         return listJson
     }
 
-    override fun obtainFromApi() {
-        TODO("Not yet implemented")
+    override fun obtainFromApi(): Pokemon? {
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl("https://pokeapi.co/api/v2/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val pokemonService: IPokemonAPI = retrofit.create(IPokemonAPI::class.java)
+
+        val call = pokemonService.getPokemon(1)
+
+        val pokemonAPI = call.execute().body()
+
+        return pokemonAPI
     }
 }

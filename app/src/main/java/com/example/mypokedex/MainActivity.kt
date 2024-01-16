@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.mypokedex.domain.model.Pokemon
-import com.example.mypokedex.ui.screens.PokemonList
+import com.example.mypokedex.ui.screens.PokemonDetails
 import com.example.mypokedex.ui.theme.MyPokedexTheme
 import com.example.mypokedex.ui.theme.PokedexColor
 import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
@@ -62,8 +62,8 @@ private fun MyScaffold(viewModel: PokemonDetailsViewModel, listViewModel: Pokemo
         topBar = { MyTopAppBar(pokemon) }
     ) {
         if (pokemon != null) {
-            PokemonList(it, listPokemon, pokemon)
-            //PokemonDetails(pokemon, it)
+            //PokemonList(it, listPokemon, pokemon)
+            PokemonDetails(pokemon, it)
         } else {
             Column(
                 modifier = Modifier.padding(paddingValues = it),
@@ -91,7 +91,7 @@ fun MyTopAppBar(pokemon: Pokemon?) {
             }
         },
         actions = {
-            Text(text = "#${pokemon?.pokemonID}", color = Color.White)
+            Text(text = "#${pokemon?.id}", color = Color.White)
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(PokedexColor)
     )

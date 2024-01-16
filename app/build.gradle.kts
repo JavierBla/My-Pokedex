@@ -75,4 +75,6 @@ dependencies {
     val hiltVersion = "2.48.1" // Asegúrate de que esta es la versión correcta
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.8.0")
 }

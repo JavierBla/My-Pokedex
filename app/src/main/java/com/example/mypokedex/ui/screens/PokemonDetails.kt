@@ -83,7 +83,7 @@ fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Types(pokemon)
+        //Types(pokemon)
 
         BasicPokemonDatta(pokemon)
 
@@ -91,16 +91,16 @@ fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
     }
 }
 
-@Composable
+/*@Composable
 fun Types(pokemon: Pokemon) {
     Row {
-        pokemon.types.map {
+        pokemon.pokemonTypes.map {
             Spacer(modifier = Modifier.size(30.dp, 50.dp))
             MyTypes(it)
             Spacer(modifier = Modifier.size(20.dp, 50.dp))
         }
     }
-}
+}*/
 
 @Composable
 private fun MyTypes(types: Types) {
@@ -146,7 +146,7 @@ private fun PokemonStats(pokemon: Pokemon) {
 
     Spacer(modifier = Modifier.height(10.dp))
 
-    pokemon.stats.map {
+    pokemon.pokemonStats.map {
         val with = if (it.name == "EXP") 1000/10 else it.weight
         val weight = if (it.name == "EXP") "/1000" else "/300"
 

@@ -22,7 +22,7 @@ import com.example.mypokedex.R
 fun PokemonListItem(pokemonName: String) {
     Card(
         modifier = Modifier
-            .clickable { }
+            .clickable {  }
             .padding(end = 25.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.DarkGray
