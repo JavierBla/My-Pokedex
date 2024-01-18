@@ -83,7 +83,7 @@ fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        //Types(pokemon)
+        Types(pokemon)
 
         BasicPokemonDatta(pokemon)
 
@@ -91,7 +91,7 @@ fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
     }
 }
 
-/*@Composable
+@Composable
 fun Types(pokemon: Pokemon) {
     Row {
         pokemon.pokemonTypes.map {
@@ -100,7 +100,7 @@ fun Types(pokemon: Pokemon) {
             Spacer(modifier = Modifier.size(20.dp, 50.dp))
         }
     }
-}*/
+}
 
 @Composable
 private fun MyTypes(types: Types) {

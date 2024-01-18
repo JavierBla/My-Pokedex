@@ -27,7 +27,7 @@ class PokemonListViewModel @Inject constructor(
             val pokemonLoaded = withContext(Dispatchers.IO) {
                 pokemonRepository.obtainListFromJson()
             }
-            _list.postValue(pokemonLoaded as List<String>?)
+            _list.postValue(pokemonLoaded as List<*>?)
         }
     }
 }

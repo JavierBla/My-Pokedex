@@ -9,6 +9,7 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
 import java.lang.reflect.Type
 
 class PokemonDeserialized: JsonDeserializer<Pokemon> {
@@ -73,6 +74,6 @@ class PokemonDeserialized: JsonDeserializer<Pokemon> {
 
         stats.add(Stat("EXP",json.get("base_experience").asInt, EXPColor))
 
-        return Pokemon(id,name,/*pokemonTypes*/weight,height,stats,image)
+        return Pokemon(id,name,pokemonTypes,weight,height,stats,image)
     }
 }
