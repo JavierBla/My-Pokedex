@@ -8,25 +8,27 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.mypokedex.domain.model.Pokemon
+import androidx.navigation.NavHostController
 import com.example.mypokedex.ui.components.PokemonListItem
+import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PokemonList(paddingValues: PaddingValues, list: List<*>?, pokemon: Pokemon) {
-
+fun PokemonList(
+    paddingValues: PaddingValues,
+    list: List<*>?,
+    navHostController: NavHostController
+) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(paddingValues),
         columns = StaggeredGridCells.Fixed(2),
         content = {
             list?.size?.let {
                 items(it) { index ->
-                    PokemonListItem(pokemonName = list[index].toString())
+                    PokemonListItem(pokemonName = list[index].toString(), navHostController)
                 }
             }
         },
         verticalItemSpacing = 25.dp,
         contentPadding = PaddingValues(start = 20.dp),
-
     )
 }

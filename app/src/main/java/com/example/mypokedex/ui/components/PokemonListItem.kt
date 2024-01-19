@@ -8,6 +8,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,13 +17,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mypokedex.R
+import com.example.mypokedex.ui.screens.PokemonDetails
+import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
 
 @Composable
-fun PokemonListItem(pokemonName: String) {
+fun PokemonListItem(pokemonName: String, navHostController: NavHostController) {
+
     Card(
         modifier = Modifier
-            .clickable {  }
+            .clickable {
+                navHostController.navigate("PokemonDetails/{$pokemonName}")
+            }
             .padding(end = 25.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.DarkGray

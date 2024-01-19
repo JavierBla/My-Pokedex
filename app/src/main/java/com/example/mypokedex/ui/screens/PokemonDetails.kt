@@ -1,5 +1,6 @@
 package com.example.mypokedex.ui.screens
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,15 +32,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.mypokedex.R
 import com.example.mypokedex.domain.model.Pokemon
 import com.example.mypokedex.domain.model.Types
+import com.example.mypokedex.domain.repositories.PokemonRepository
 import com.example.mypokedex.ui.theme.PokedexColor
+import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
 import java.util.Locale
 
 @Composable
-fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
+fun PokemonDetails(name: String, paddingValues: PaddingValues) {
+    val pokemonDetailsViewModel = PokemonDetailsViewModel(PokemonRepository(Application()))
+
+    val pokemon = pokemonDetailsViewModel.pokemon.value
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -69,25 +78,35 @@ fun PokemonDetails(pokemon: Pokemon, paddingValues: PaddingValues) {
                         .fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
-                AsyncImage(
-                    model = pokemon.image,
-                    contentDescription = "pokemon",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(250.dp)
-                )
+                if (pokemon != null) {
+                    AsyncImage(
+                        model = pokemon.image,
+                        contentDescription = "pokemon",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(250.dp)
+                    )
+                }
             }
         }
 
-        Text(text = pokemon.name.replaceFirstChar { it.uppercase() }, fontSize = 40.sp, color = Color.White)
+        if (pokemon != null) {
+            Text(text = pokemon.name.replaceFirstChar { it.uppercase() }, fontSize = 40.sp, color = Color.White)
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Types(pokemon)
+        if (pokemon != null) {
+            Types(pokemon)
+        }
 
-        BasicPokemonDatta(pokemon)
+        if (pokemon != null) {
+            BasicPokemonDatta(pokemon)
+        }
 
-        PokemonStats(pokemon)
+        if (pokemon != null) {
+            PokemonStats(pokemon)
+        }
     }
 }
 

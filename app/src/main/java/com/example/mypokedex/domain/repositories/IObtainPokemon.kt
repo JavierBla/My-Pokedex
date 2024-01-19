@@ -7,5 +7,5 @@ import retrofit2.Response
 interface IObtainPokemon {
     fun obtainFromJson(pokemonName: String): Pokemon
     fun obtainListFromJson(): List<*>
-    fun obtainFromApi(): Pokemon
+    fun obtainFromApi(pokemonName: String): Pokemon
 }

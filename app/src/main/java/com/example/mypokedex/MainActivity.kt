@@ -7,7 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -26,8 +28,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mypokedex.domain.model.Pokemon
 import com.example.mypokedex.ui.screens.PokemonDetails
+import com.example.mypokedex.ui.screens.PokemonList
 import com.example.mypokedex.ui.theme.MyPokedexTheme
 import com.example.mypokedex.ui.theme.PokedexColor
 import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
@@ -40,9 +50,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyPokedexTheme {
-                val viewModel: PokemonDetailsViewModel by viewModels()
                 val listPokemon: PokemonListViewModel by viewModels()
-                MyScaffold(viewModel, listPokemon)
+                MyScaffold(listPokemon)
             }
         }
     }
@@ -51,19 +60,18 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun MyScaffold(viewModel: PokemonDetailsViewModel, listViewModel: PokemonListViewModel) {
-    val pokemon = viewModel.pokemon.observeAsState().value
+private fun MyScaffold(listViewModel: PokemonListViewModel) {
     val listPokemon = listViewModel.list.observeAsState().value
+    val navController = rememberNavController()
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = { MyTopAppBar(pokemon) }
+        topBar = { MyTopAppBar(navController) }
     ) {
-        if (pokemon != null) {
-            //PokemonList(it, listPokemon, pokemon)
-            PokemonDetails(pokemon, it)
+        if (listPokemon != null) {
+            MyNavController(navController, listPokemon, it)
         } else {
             Column(
                 modifier = Modifier.padding(paddingValues = it),
@@ -80,18 +88,41 @@ private fun MyScaffold(viewModel: PokemonDetailsViewModel, listViewModel: Pokemo
     }
 }
 
+@Composable
+private fun MyNavController(
+    navController: NavHostController,
+    listPokemon: List<*>?,
+    paddingValues: PaddingValues
+) {
+    NavHost(navController = navController, startDestination = "PokemonList") {
+        composable("PokemonList") {
+            PokemonList(paddingValues, listPokemon, navController)
+        }
+        composable("PokemonDetails/{name}",
+            arguments = listOf(
+                navArgument("name") { type = NavType.StringType }
+            )
+        ) {backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            PokemonDetails(name, paddingValues)
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(pokemon: Pokemon?) {
+fun MyTopAppBar(navHostController: NavHostController) {
     TopAppBar(
         title = { Text(text = "Pokedex", color = Color.White) },
         navigationIcon = {
-            IconButton(onClick = { /* doSomething() */ }) {
+            IconButton(onClick = { navHostController.navigate("PokemonList") }) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = null, tint = Color.White)
             }
         },
         actions = {
-            Text(text = "#${pokemon?.id}", color = Color.White)
+            Text(
+                text = "#1",
+                color = Color.White)
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(PokedexColor)
     )
