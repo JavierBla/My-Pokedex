@@ -1,6 +1,5 @@
 package com.example.mypokedex.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -16,15 +15,19 @@ import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
 fun PokemonList(
     paddingValues: PaddingValues,
     list: List<*>?,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    pokemonViewModel: PokemonDetailsViewModel
 ) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.padding(paddingValues),
-        columns = StaggeredGridCells.Fixed(2),
+        columns = StaggeredGridCells.Fixed(1),
         content = {
             list?.size?.let {
                 items(it) { index ->
-                    PokemonListItem(pokemonName = list[index].toString(), navHostController)
+                    PokemonListItem(
+                        list[index].toString(),
+                        navHostController,
+                        pokemonViewModel)
                 }
             }
         },

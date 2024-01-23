@@ -1,8 +1,6 @@
 package com.example.mypokedex.domain.repositories
 
 import com.example.mypokedex.domain.model.Pokemon
-import retrofit2.Call
-import retrofit2.Response
 
 interface IObtainPokemon {
     fun obtainFromJson(pokemonName: String): Pokemon

@@ -1,12 +1,6 @@
 package com.example.mypokedex.domain.model
 
-import androidx.compose.ui.text.toUpperCase
 import com.example.mypokedex.domain.pokemon.PokemonAPIData
-import com.example.mypokedex.domain.pokemon.Sprites
-import com.example.mypokedex.ui.theme.ATKColor
-import com.example.mypokedex.ui.theme.DEFColor
-import com.example.mypokedex.ui.theme.EXPColor
-import com.example.mypokedex.ui.theme.HPColor
 
 val p: PokemonAPIData = PokemonAPIData()
 

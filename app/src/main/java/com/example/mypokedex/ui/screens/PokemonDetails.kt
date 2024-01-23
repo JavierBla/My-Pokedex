@@ -1,6 +1,5 @@
 package com.example.mypokedex.ui.screens
 
-import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,21 +31,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.mypokedex.R
 import com.example.mypokedex.domain.model.Pokemon
 import com.example.mypokedex.domain.model.Types
-import com.example.mypokedex.domain.repositories.PokemonRepository
 import com.example.mypokedex.ui.theme.PokedexColor
 import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
 import java.util.Locale
 
 @Composable
-fun PokemonDetails(name: String, paddingValues: PaddingValues) {
-    val pokemonDetailsViewModel = PokemonDetailsViewModel(PokemonRepository(Application()))
+fun PokemonDetails(paddingValues: PaddingValues, pokemonDetailsViewModel: PokemonDetailsViewModel) {
 
-    val pokemon = pokemonDetailsViewModel.pokemon.value
+    val pokemon = pokemonDetailsViewModel.pokemon.observeAsState().value
 
     Column(
         modifier = Modifier

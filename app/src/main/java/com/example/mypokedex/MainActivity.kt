@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,14 +27,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.mypokedex.domain.model.Pokemon
 import com.example.mypokedex.ui.screens.PokemonDetails
 import com.example.mypokedex.ui.screens.PokemonList
 import com.example.mypokedex.ui.theme.MyPokedexTheme
@@ -50,8 +45,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyPokedexTheme {
-                val listPokemon: PokemonListViewModel by viewModels()
-                MyScaffold(listPokemon)
+                val listViewModel: PokemonListViewModel by viewModels()
+                val pokemonViewModel: PokemonDetailsViewModel by viewModels()
+                MyScaffold(pokemonViewModel, listViewModel)
             }
         }
     }
@@ -60,7 +56,7 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun MyScaffold(listViewModel: PokemonListViewModel) {
+private fun MyScaffold(pokemonViewModel: PokemonDetailsViewModel, listViewModel: PokemonListViewModel) {
     val listPokemon = listViewModel.list.observeAsState().value
     val navController = rememberNavController()
 
@@ -68,10 +64,10 @@ private fun MyScaffold(listViewModel: PokemonListViewModel) {
         modifier = Modifier
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = { MyTopAppBar(navController) }
+        topBar = { MyTopAppBar(navController, pokemonViewModel) }
     ) {
         if (listPokemon != null) {
-            MyNavController(navController, listPokemon, it)
+            MyNavController(navController, listPokemon, it, pokemonViewModel)
         } else {
             Column(
                 modifier = Modifier.padding(paddingValues = it),
@@ -92,26 +88,26 @@ private fun MyScaffold(listViewModel: PokemonListViewModel) {
 private fun MyNavController(
     navController: NavHostController,
     listPokemon: List<*>?,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    pokemonViewModel: PokemonDetailsViewModel
 ) {
     NavHost(navController = navController, startDestination = "PokemonList") {
         composable("PokemonList") {
-            PokemonList(paddingValues, listPokemon, navController)
+            PokemonList(paddingValues, listPokemon, navController, pokemonViewModel)
         }
-        composable("PokemonDetails/{name}",
-            arguments = listOf(
-                navArgument("name") { type = NavType.StringType }
-            )
+        composable("PokemonDetails"
         ) {backStackEntry ->
-            val name = backStackEntry.arguments?.getString("name") ?: ""
-            PokemonDetails(name, paddingValues)
+            PokemonDetails(paddingValues, pokemonViewModel)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(navHostController: NavHostController) {
+fun MyTopAppBar(
+    navHostController: NavHostController,
+    pokemonViewModel: PokemonDetailsViewModel
+) {
     TopAppBar(
         title = { Text(text = "Pokedex", color = Color.White) },
         navigationIcon = {
@@ -121,7 +117,7 @@ fun MyTopAppBar(navHostController: NavHostController) {
         },
         actions = {
             Text(
-                text = "#1",
+                text = pokemonViewModel.comproveId(),
                 color = Color.White)
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(PokedexColor)

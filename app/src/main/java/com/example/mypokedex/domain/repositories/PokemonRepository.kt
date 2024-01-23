@@ -7,10 +7,6 @@ import com.example.mypokedex.domain.model.PokemonDeserialized
 import com.example.mypokedex.domain.model.PokemonListDeserializated
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -50,7 +46,6 @@ class PokemonRepository @Inject constructor(application: Application): IObtainPo
         val pokemonService: IPokemonAPI = retrofit.create(IPokemonAPI::class.java)
 
         val call = pokemonService.getPokemon(pokemonName)
-
 
         val gson: Gson = GsonBuilder().registerTypeAdapter(
             Pokemon::class.java,

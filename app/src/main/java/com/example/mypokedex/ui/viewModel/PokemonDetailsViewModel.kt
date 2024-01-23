@@ -18,28 +18,22 @@ class PokemonDetailsViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _pokemon: MutableLiveData<Pokemon> = MutableLiveData(null)
-    private val _pokemonName: MutableLiveData<String> = MutableLiveData("ditto")
     val pokemon: LiveData<Pokemon> = _pokemon
-    val name: LiveData<String> = _pokemonName
 
-    init {
-        loadPokemon()
-    }
-
-    private fun loadPokemon() {
+    fun loadPokemon(name: String) {
         viewModelScope.launch {
             val pokemonLoaded = withContext(Dispatchers.IO) {
-                pokemonRepository.obtainFromApi(getPokemonName())
+                pokemonRepository.obtainFromApi(name)
             }
             _pokemon.postValue(pokemonLoaded)
         }
     }
 
-    private fun getPokemonName(): String {
-        return _pokemonName.value.toString()
-    }
-
-    fun setPokemonName(name: String?) {
-        _pokemonName.value = name
+    fun comproveId(): String {
+        return if (pokemon.value?.id == null) {
+            ""
+        } else {
+            pokemon.value?.id.toString()
+        }
     }
 }
