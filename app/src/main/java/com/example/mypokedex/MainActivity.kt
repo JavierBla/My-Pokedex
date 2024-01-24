@@ -95,8 +95,7 @@ private fun MyNavController(
         composable("PokemonList") {
             PokemonList(paddingValues, listPokemon, navController, pokemonViewModel)
         }
-        composable("PokemonDetails"
-        ) {backStackEntry ->
+        composable("PokemonDetails") {
             PokemonDetails(paddingValues, pokemonViewModel)
         }
     }

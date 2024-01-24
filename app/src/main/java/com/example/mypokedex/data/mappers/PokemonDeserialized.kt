@@ -1,5 +1,8 @@
-package com.example.mypokedex.domain.model
+package com.example.mypokedex.data.mappers
 
+import com.example.mypokedex.domain.model.Pokemon
+import com.example.mypokedex.domain.model.Stat
+import com.example.mypokedex.domain.model.Types
 import com.example.mypokedex.ui.theme.ATKColor
 import com.example.mypokedex.ui.theme.DEFColor
 import com.example.mypokedex.ui.theme.EXPColor

@@ -1,17 +1,16 @@
-package com.example.mypokedex.domain.repositories
+package com.example.mypokedex.data.sources.local
 
 import android.app.Application
 import android.content.Context
+import com.example.mypokedex.data.mappers.PokemonDeserialized
+import com.example.mypokedex.data.mappers.PokemonListDeserializated
 import com.example.mypokedex.domain.model.Pokemon
-import com.example.mypokedex.domain.model.PokemonDeserialized
-import com.example.mypokedex.domain.model.PokemonListDeserializated
+import com.example.mypokedex.domain.repositories.IObtainPokemonLocal
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
-class PokemonRepository @Inject constructor(application: Application): IObtainPokemon {
+class PokemonLocalDataSourceLocal @Inject constructor(application: Application): IObtainPokemonLocal {
 
     private val context: Context = application.applicationContext
 
@@ -35,25 +34,5 @@ class PokemonRepository @Inject constructor(application: Application): IObtainPo
         val listJson = gson.fromJson(jsonFile, List::class.java)
 
         return listJson
-    }
-
-    override fun obtainFromApi(pokemonName: String): Pokemon {
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val pokemonService: IPokemonAPI = retrofit.create(IPokemonAPI::class.java)
-
-        val call = pokemonService.getPokemon(pokemonName)
-
-        val gson: Gson = GsonBuilder().registerTypeAdapter(
-            Pokemon::class.java,
-            PokemonDeserialized()
-        ).create()
-
-        val pokemonAPI = gson.fromJson(call.execute().body().toString(), Pokemon::class.java)
-
-        return pokemonAPI
     }
 }

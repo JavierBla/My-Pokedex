@@ -2,8 +2,7 @@ package com.example.mypokedex.domain.repositories
 
 import com.example.mypokedex.domain.model.Pokemon
 
-interface IObtainPokemon {
+interface IObtainPokemonLocal {
     fun obtainFromJson(pokemonName: String): Pokemon
     fun obtainListFromJson(): List<*>
-    fun obtainFromApi(pokemonName: String): Pokemon
 }

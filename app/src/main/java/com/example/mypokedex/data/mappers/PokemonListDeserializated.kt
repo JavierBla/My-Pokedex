@@ -1,4 +1,4 @@
-package com.example.mypokedex.domain.model
+package com.example.mypokedex.data.mappers
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
