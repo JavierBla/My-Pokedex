@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mypokedex.domain.model.Pokemon
-import com.example.mypokedex.data.repositories.PokemonRepositoryLocal
+import com.example.mypokedex.data.repositories.PokemonRepository
+import com.example.mypokedex.domain.usecase.GetPokemonDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PokemonDetailsViewModel @Inject constructor(
-    private val pokemonRepository: PokemonRepositoryLocal
+    private val getPokemonDetail: GetPokemonDetail
 ): ViewModel() {
 
     private val _pokemon: MutableLiveData<Pokemon> = MutableLiveData(null)
@@ -22,10 +23,7 @@ class PokemonDetailsViewModel @Inject constructor(
 
     fun loadPokemon(name: String) {
         viewModelScope.launch {
-            val pokemonLoaded = withContext(Dispatchers.IO) {
-                pokemonRepository.obtainFromApi(name)
-            }
-            _pokemon.postValue(pokemonLoaded)
+            _pokemon.postValue(getPokemonDetail.getPokemon(name))
         }
     }
 

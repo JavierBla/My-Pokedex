@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mypokedex.R
+import com.example.mypokedex.ui.theme.PokedexColor
 import com.example.mypokedex.ui.viewModel.PokemonDetailsViewModel
 
 @Composable
@@ -31,24 +32,18 @@ fun PokemonListItem(
         modifier = Modifier
             .clickable {
                 pokemonViewModel.loadPokemon(pokemonName)
-                navHostController.navigate("PokemonDetails")
+                navHostController.navigate("PokemonDetailsScreen")
             }
             .padding(end = 25.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.DarkGray
+            containerColor = PokedexColor
         )
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.charizard),
-            contentDescription = "",
-            alignment = Alignment.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
         Text(
             text = pokemonName.replaceFirstChar { it.toUpperCase() },
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
+            fontSize = 40.sp,
             color = Color.White,
             modifier = Modifier.fillMaxWidth()
         )

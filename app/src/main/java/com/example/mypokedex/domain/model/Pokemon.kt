@@ -1,9 +1,5 @@
 package com.example.mypokedex.domain.model
 
-import com.example.mypokedex.domain.pokemon.PokemonAPIData
-
-val p: PokemonAPIData = PokemonAPIData()
-
 data class Pokemon(
     var id: Int,
     var name: String,

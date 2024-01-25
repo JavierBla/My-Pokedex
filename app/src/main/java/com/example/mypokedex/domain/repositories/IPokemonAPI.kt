@@ -8,4 +8,7 @@ import retrofit2.http.Path
 interface IPokemonAPI {
     @GET("pokemon/{name}")
     fun getPokemon(@Path("name") name: String): Call<JsonObject>
+
+    @GET("pokemon?limit=100000&offset=0")
+    fun getListPokemon(): Call<JsonObject>
 }

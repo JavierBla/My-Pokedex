@@ -21,8 +21,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mypokedex.ui.screens.PokedexWelcome
 import com.example.mypokedex.ui.screens.PokemonDetails
 import com.example.mypokedex.ui.screens.PokemonList
 import com.example.mypokedex.ui.theme.MyPokedexTheme
@@ -56,18 +62,38 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun MyScaffold(pokemonViewModel: PokemonDetailsViewModel, listViewModel: PokemonListViewModel) {
+private fun MyScaffold(
+    pokemonViewModel: PokemonDetailsViewModel,
+    listViewModel: PokemonListViewModel
+) {
     val listPokemon = listViewModel.list.observeAsState().value
     val navController = rememberNavController()
+
+    var topAppBarState by rememberSaveable { mutableStateOf(true) }
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = { MyTopAppBar(navController, pokemonViewModel) }
+        topBar = { if (topAppBarState) MyTopAppBar(navController, pokemonViewModel) }
     ) {
+        val paddingValues = it
+
         if (listPokemon != null) {
-            MyNavController(navController, listPokemon, it, pokemonViewModel)
+            NavHost(navController = navController, startDestination = "PokedexWelcomeScreen") {
+                composable("PokedexWelcomeScreen") {
+                    PokedexWelcome(navController, paddingValues)
+                    topAppBarState = false
+                }
+                composable("PokemonListScreen") {
+                    PokemonList(paddingValues, listPokemon, navController, pokemonViewModel)
+                    topAppBarState = true
+                }
+                composable("PokemonDetailsScreen") {
+                    PokemonDetails(paddingValues, pokemonViewModel)
+                    topAppBarState = true
+                }
+            }
         } else {
             Column(
                 modifier = Modifier.padding(paddingValues = it),
@@ -84,23 +110,6 @@ private fun MyScaffold(pokemonViewModel: PokemonDetailsViewModel, listViewModel:
     }
 }
 
-@Composable
-private fun MyNavController(
-    navController: NavHostController,
-    listPokemon: List<*>?,
-    paddingValues: PaddingValues,
-    pokemonViewModel: PokemonDetailsViewModel
-) {
-    NavHost(navController = navController, startDestination = "PokemonList") {
-        composable("PokemonList") {
-            PokemonList(paddingValues, listPokemon, navController, pokemonViewModel)
-        }
-        composable("PokemonDetails") {
-            PokemonDetails(paddingValues, pokemonViewModel)
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(
@@ -110,7 +119,7 @@ fun MyTopAppBar(
     TopAppBar(
         title = { Text(text = "Pokedex", color = Color.White) },
         navigationIcon = {
-            IconButton(onClick = { navHostController.navigate("PokemonList") }) {
+            IconButton(onClick = { navHostController.navigate("PokemonListScreen") }) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = null, tint = Color.White)
             }
         },

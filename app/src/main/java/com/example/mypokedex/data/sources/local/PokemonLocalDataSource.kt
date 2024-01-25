@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import javax.inject.Inject
 
-class PokemonLocalDataSourceLocal @Inject constructor(application: Application): IObtainPokemonLocal {
+class PokemonLocalDataSource @Inject constructor(application: Application): IObtainPokemonLocal {
 
     private val context: Context = application.applicationContext
 
