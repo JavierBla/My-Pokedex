@@ -116,16 +116,21 @@ fun MyTopAppBar(
     navHostController: NavHostController,
     pokemonViewModel: PokemonDetailsViewModel
 ) {
+    val pokemonId = pokemonViewModel.pokemon.observeAsState().value?.id.toString()
+    var idVisible by rememberSaveable { mutableStateOf(false) }
     TopAppBar(
         title = { Text(text = "Pokedex", color = Color.White) },
         navigationIcon = {
-            IconButton(onClick = { navHostController.navigate("PokemonListScreen") }) {
+            IconButton(onClick = {
+                navHostController.navigate("PokemonListScreen")
+                idVisible = false
+            }) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = null, tint = Color.White)
             }
         },
         actions = {
             Text(
-                text = pokemonViewModel.comproveId(),
+                text = if (idVisible) "#$pokemonId" else "",
                 color = Color.White)
         },
         colors = TopAppBarDefaults.largeTopAppBarColors(PokedexColor)

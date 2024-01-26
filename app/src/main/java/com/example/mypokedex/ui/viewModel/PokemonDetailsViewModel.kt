@@ -26,12 +26,4 @@ class PokemonDetailsViewModel @Inject constructor(
             _pokemon.postValue(getPokemonDetail.getPokemon(name))
         }
     }
-
-    fun comproveId(): String {
-        return if (pokemon.value?.id == null) {
-            ""
-        } else {
-            pokemon.value?.id.toString()
-        }
-    }
 }

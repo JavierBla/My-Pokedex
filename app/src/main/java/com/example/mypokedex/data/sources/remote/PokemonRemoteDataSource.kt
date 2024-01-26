@@ -9,14 +9,11 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class PokemonRemoteDataSource: IObtainPokemonRemote {
 
-    var retrofit: IPokemonAPI = Retrofit.Builder()
-        .baseUrl("https://pokeapi.co/api/v2/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(IPokemonAPI::class.java)
+    private var retrofit: IPokemonAPI = RetrofitModule.provideRetrofit()
 
     override fun obtainPokemonFromApi(pokemonName: String): Pokemon {
         val call = retrofit.getPokemon(pokemonName)
